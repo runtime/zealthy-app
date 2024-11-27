@@ -7,15 +7,19 @@ const ContextProvider = ({ children }) => {
     const [userData, setUserData] = useState([]);
     const [currentUser, setCurrentUser] = useState({ id: '', email: '', password:'', about: '', street:'', city:'', state:'', zip:''}); // Default user state
     const [currentStep, setCurrentStep] = useState(1); // Track onboarding step
-    const [adminConfig, setAdminConfig] = useState([['AboutForm'], ['AddressForm', 'BirthdatePicker']]);
+    //const [adminConfig, setAdminConfig] = useState([['AboutForm'], ['AddressForm', 'BirthdatePicker']]);
+    const [adminConfig, setAdminConfig] = useState([['AddressForm'], ['AboutForm', 'BirthdatePicker']]);
+    const [activeComponents, setActiveComponents] = useState(adminConfig.flat());
+    const [completeComponents, setCompleteComponents] = useState([]); // Track completed components
+
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const response = await getUsers();
-                console.log('[ContextProvider] Fetched users response:', response);
-                console.log('[ContextProvider] Fetched users response.data:', response.data);
-                console.log('[ContextProvider] Fetched users response.data:', response.data.Items);
+                //console.log('[ContextProvider] Fetched users response:', response);
+                //console.log('[ContextProvider] Fetched users response.data:', response.data);
+                console.log('[ContextProvider] Fetched users response.data.items:', response.data.Items);
                 if (Array.isArray(response.data)) {
                     setUserData(response.data);
                 }
@@ -95,15 +99,150 @@ const ContextProvider = ({ children }) => {
     };
 
 
-    const updateStep = (step) => {
-        setCurrentStep(step);
+
+    // const validateStep = (step) => {
+    //     const stepConfig = adminConfig[step - 1] || [];
+    //     const allComplete = stepConfig.every((component) => completeComponents.includes(component));
+    //     console.log('[ContextProvider] Step validation:', { step, stepConfig, allComplete });
+    //     return allComplete;
+    // };
+
+    // const updateStep = () => {
+    //     if (!validateStep(currentStep)) {
+    //         console.warn('[ContextProvider] Cannot move to the next step: Current step is incomplete.');
+    //         return `/create-account-${currentStep}`; // Stay on the current step
+    //     }
+    //
+    //     const nextStep = currentStep + 1;
+    //     if (nextStep > adminConfig.length) {
+    //         console.log('[ContextProvider] All steps complete. Navigating to /users.');
+    //         return '/users'; // All steps are complete
+    //     }
+    //
+    //     setCurrentStep(nextStep);
+    //     console.log('[ContextProvider] Moving to the next step:', nextStep);
+    //     return `/create-account-${nextStep}`; // Navigate to the next route
+    // };
+
+    const updateStep = () => {
+        if (isAllComplete()) {
+            console.log('[ContextProvider] All components complete for current step!');
+
+            if (currentStep >= adminConfig.length) {
+                console.log('[ContextProvider] All steps complete. Navigating to /users.');
+                return '/users'; // Go to success page
+            } else {
+                const nextStep = currentStep + 1;
+                setCurrentStep(nextStep); // Increment step
+                const nextRoute = `/create-account-${nextStep}`;
+                console.log('[ContextProvider] Navigating to:', nextRoute);
+                return nextRoute; // Go to the next route
+            }
+        } else {
+            console.warn('[ContextProvider] Current step is not complete. Staying on current step.');
+        }
     };
+
+
+    const updateCompleteComponents = (componentName) => {
+        if (!completeComponents.includes(componentName)) {
+            setCompleteComponents((prev) => {
+                const updated = [...prev, componentName];
+                console.log('[ContextProvider] Updated completeComponents:', updated);
+                return updated;
+            });
+        } else {
+            console.log('[ContextProvider] Component already marked as complete:', componentName);
+        }
+    };
+
+
+
+    const isAllComplete = () => {
+        if (currentStep < 1 || currentStep > adminConfig.length) {
+            console.error('[ContextProvider] Invalid currentStep:', currentStep);
+            return false; // Fail-safe for invalid step
+        }
+
+        // Get the components for the current step
+        const stepConfig = adminConfig[currentStep - 1] || [];
+        console.log('[ContextProvider] Checking stepConfig:', stepConfig);
+
+        // Check if every component in the step is marked complete
+        const result = stepConfig.every((component) => completeComponents.includes(component));
+        console.log('[ContextProvider] isAllComplete result:', result);
+
+        return result;
+    };
+
+
+
+    console.log('[ContextProvider] =========================================================');
+    console.log('[ContextProvider] completed components:', completeComponents);
+    //console.log('[ContextProvider] currentUser:', currentUser);
+    console.log('[ContextProvider] adminConfig:', adminConfig);
+    console.log('[ContextProvider] currentStep:', currentStep);
+    console.log('[ContextProvider] math that the adminConfig does -->currentStep -1:', currentStep -1);
+    console.log('[ContextProvider] Current step config:', adminConfig[currentStep - 1]);
+    console.log('[ContextProvider] isAllComplete:', isAllComplete());
+    console.log('[ContextProvider] =========================================================');
+
+
+
+    // const isStepComplete = (currentStep) => {
+    //     const activeComponents = adminConfig[currentStep - 1] || [];
+    //     return activeComponents.every((component) => completeComponents.includes(component));
+    // };
+
+    // const updateStep = () => {
+    //     const nextStep = currentStep + 1;
+    //     if (isAllComplete()) {
+    //         // Navigate to "Success" or home page
+    //         return '/users';
+    //     } else {
+    //         // Go to next step
+    //         setCurrentStep(nextStep);
+    //         return `/create-account-${nextStep}`;
+    //     }
+    // };
+
+    // const addToComplete = (component) => {
+    //     if (!completeComponents.includes(component)) {
+    //         console.log('[ContextProvider] Adding to completeComponents:', component);
+    //         setCompleteComponents((prev) => [...prev, component]);
+    //         console.log('[ContextProvider] setCompleteComponents complete for:', component);
+    //     }
+    // };
+
+
+    // const updateCompleteComponents = (componentName) => {
+    //     setCompleteComponents((prev) => {
+    //         const updated = [...prev];
+    //         if (!updated.includes(componentName)) {
+    //             updated.push(componentName);
+    //         }
+    //         console.log('[ContextProvider] Updated completeComponents:', updated);
+    //         return updated;
+    //     });
+    // };
+
+    // const isAllComplete = () => {
+    //     return adminConfig[currentStep - 1].every((component) => completeComponents.includes(component));
+    //     //return activeComponents.every((component) => completeComponents.includes(component));
+    //
+    // }
+
+
 
     const value = {
         userData,
         setUserData,
         adminConfig,
         setAdminConfig,
+        completeComponents,
+        setCompleteComponents,
+        isAllComplete,
+        updateCompleteComponents,
         currentStep,
         updateStep,
         addUser,

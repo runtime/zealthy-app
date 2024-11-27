@@ -4,9 +4,15 @@ import { AppContext } from '../context/ContextProvider';
 const ShowUsers = () => {
     const { userData, setUserData } = useContext(AppContext);
 
-    console.log('[ShowUsers]')
+    console.log('[ShowUsers], userData: ', userData)
+
+    let content = 'loading....'
 
     useEffect(() => {
+        if (userData.length === 0) {
+            console.log('[ShowUsers] userData is undefined or null');
+
+        }
         const fetchUsers = async () => {
             try {
                 const response = await fetch('https://dplojg10ic.execute-api.us-east-1.amazonaws.com/prod/users'); // Adjust endpoint as needed

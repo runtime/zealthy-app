@@ -6,17 +6,34 @@ import { TextField, Button, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const AddressForm = () => {
-    const { editUser, currentUser, currentStep, updateStep } = useContext(AppContext);
+    const { editUser, currentUser, currentStep, updateStep, isAllComplete, updateCompleteComponents } = useContext(AppContext);
     const navigate = useNavigate();
 
     console.log('[AddressForm] currentUser:', currentUser);
 
-    const handleNavigation = () => {
-        console.log('[AddressForm] handleNavigation currentStep:', currentStep)
-        //const nextStep = currentStep + 1; // Increment step
-        //updateStep(nextStep); // Update step in context
-        //navigate(`/create-account-${nextStep}`); // Navigate to the next step
-    };
+
+// const handleNavigation = () => {
+//     console.log('[AddressForm] handleNavigation isAllComplete:', isAllComplete);
+//     if (!isAllComplete) {
+//         const nextStep = currentStep + 1;
+//         updateStep(nextStep);
+//         navigate(`/create-account-${nextStep}`);
+//     } else {
+//         console.log('[You are finished!]');
+//         navigate('/users');
+//     }
+// };
+
+    // const handleNavigation = () => {
+    //     console.log('[AddressForm] handleNavigation isAllComplete:', isAllComplete());
+    //
+    //     if (isAllComplete()) {
+    //         navigate('/users'); // Navigate to the final success page
+    //     } else {
+    //         const nextRoute = updateStep(currentStep + 1); // Dynamically determine the next route
+    //         navigate(nextRoute); // Navigate to the next step
+    //     }
+    // };
 
     const handleSubmit = async (values) => {
         const id = currentUser?.id;
@@ -29,11 +46,46 @@ const AddressForm = () => {
 
             await editUser(id, values); // Ensure ID is passed
             console.log('[AddressForm] Address updated successfully!');
-            handleNavigation(); // Navigate to the next step
+            updateCompleteComponents('AddressForm'); // Mark AddressForm as complete
+            const nextRoute = updateStep(); // Let context decide the next route
+            console.log('[AddressForm] nextRoute:', nextRoute);
+            navigate(nextRoute); // Navigate based on context-provided route
         } catch (error) {
             console.error('[AddressForm] Error updating Address:', error);
         }
     };
+
+
+
+    // const handleNavigation = () => {
+    //     if (isStepComplete(currentStep)) {
+    //         const nextStep = currentStep + 1;
+    //         updateStep(nextStep);
+    //         navigate(`/create-account-${nextStep}`);
+    //     } else {
+    //         console.warn('[Navigation] Current step is not complete. Cannot proceed.');
+    //     }
+    // };
+    //
+    // const handleSubmit = async (values) => {
+    //     const id = currentUser?.id;
+    //     console.log('[AddressForm] Submitting Address with id:', id, ' values:', values);
+    //
+    //     try {
+    //         if (!id) {
+    //             throw new Error('User ID is missing. Cannot proceed with update.');
+    //         }
+    //
+    //         await editUser(id, values); // Ensure ID is passed
+    //         console.log('[AddressForm] Address updated successfully!');
+    //         updateCompleteComponents('AddressForm')
+    //         handleNavigation(); // Navigate to the next step
+    //     } catch (error) {
+    //         console.error('[AddressForm] Error updating Address:', error);
+    //     }
+    // };
+
+
 
     const formik = useFormik({
         initialValues: {

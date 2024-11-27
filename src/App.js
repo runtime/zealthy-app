@@ -8,6 +8,7 @@ import CreateUser from './components/CreateUser';
 import Card from './components/Card';
 import Admin from './components/Admin';
 import ShowUsers from './components/ShowUsers';
+import ErrorPage from './components/ErrorPage';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
               <Route path="/create-account-3" element={<Card step="3" />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/users" element={<ShowUsers />} />
+              <Route path="/error" element={<ErrorPage />} />
             </Routes>
           </Router>
         </ContextProvider>

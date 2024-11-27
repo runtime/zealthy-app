@@ -6,16 +6,45 @@ import { TextField, Button, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const BirthdatePicker = () => {
-    const { editUser, currentUser, currentStep, updateStep } = useContext(AppContext);
+    const { editUser, currentUser, currentStep, updateStep, isAllComplete, updateCompleteComponents } = useContext(AppContext);
     const navigate = useNavigate();
 
     console.log('[BirthdatePicker] Current user:', currentUser);
+    // todo lets make this falsy
+    console.log('[BirthdatePicker] isAllComplete: ', isAllComplete)
+
 
     const handleNavigation = () => {
-        const nextStep = currentStep + 1; // Increment step
-        updateStep(nextStep); // Update step in context
-        navigate(`/create-account-${nextStep}`); // Navigate to the next step
+        console.log('[BirthdatePicker] handleNavigation isAllComplete:', isAllComplete);
+        if (isAllComplete) {
+            navigate('/users'); // Go to success page
+        } else {
+            const nextStep = currentStep + 1;
+            const nextRoute = updateStep(nextStep); // Update step and get the next route
+            navigate(nextRoute); // Navigate to the next step
+        }
     };
+
+
+    const handleSubmit = async (values) => {
+        const id = currentUser?.id;
+        console.log('[BirthdatePicker] Submitting Address with id:', id, ' values:', values);
+        try {
+            if (!id) {
+                throw new Error('User ID is missing. Cannot proceed with update.');
+            }
+            await editUser(id, values); // Ensure ID is passed
+            console.log('[BirthdatePicker] birthday updated successfully!');
+            updateCompleteComponents('BirthdatePicker'); // Mark as complete
+            console.log('[BirthdatePicker] updateCompleteComponents complete!');
+            handleNavigation(); // Navigate to the next step
+            console.log('[BirthdatePicker] handleNavigation complete!');
+        } catch (error) {
+            console.error('[BirthdatePicker] Error updating Address:', error);
+        }
+    };
+
+
 
     const formik = useFormik({
         initialValues: {
@@ -26,17 +55,18 @@ const BirthdatePicker = () => {
                 .max(new Date(), 'Birthdate cannot be in the future')
                 .required('Birthdate is required'),
         }),
-        onSubmit: async (values, { resetForm }) => {
-            console.log('[BirthdatePicker] Submitting Birthdate:', values);
-            try {
-                await editUser(currentUser.id, values); // Update user with birthdate
-                console.log('[BirthdatePicker] Birthdate updated successfully!');
-                handleNavigation(); // Proceed to the next step
-                resetForm();
-            } catch (error) {
-                console.error('[BirthdatePicker] Error updating birthdate:', error);
-            }
-        },
+        onSubmit: (values, { resetForm }) => handleSubmit(values, resetForm),
+        // onSubmit: async (values, { resetForm }) => {
+        //     console.log('[BirthdatePicker] Submitting Birthdate:', values);
+        //     try {
+        //         await editUser(currentUser.id, values); // Update user with birthdate
+        //         console.log('[BirthdatePicker] Birthdate updated successfully!');
+        //         handleNavigation(); // Proceed to the next step
+        //         resetForm();
+        //     } catch (error) {
+        //         console.error('[BirthdatePicker] Error updating birthdate:', error);
+        //     }
+        // },
     });
 
     return (
