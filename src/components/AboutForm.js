@@ -6,28 +6,28 @@ import { TextField, Button, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const AboutForm = () => {
-    const { editUser, currentUser, currentStep, updateStep, isAllComplete, updateCompleteComponents } = useContext(AppContext); // Access the currentUser
+    const { editUser, currentUser, currentStep, updateStep, isAllComplete, updateCompleteComponents, prettyUrl } = useContext(AppContext); // Access the currentUser
     const navigate = useNavigate();
 
-    console.log('[AboutForm] currentUser:', currentUser);
+    //console.log('[AboutForm] currentUser:', currentUser);
+
 
     // Navigation handler
-    // const handleNavigation = () => {
-    //     const nextStep = currentStep + 1; // Increment step
-    //     updateStep(nextStep); // Update step in context
-    //     navigate(`/create-account-${nextStep}`); // Navigate to the next step
-    // };
-
     const handleNavigation = () => {
-        console.log('[AboutForm] handleNavigation isAllComplete:', isAllComplete);
-        if (isAllComplete) {
-            navigate('/users'); // Go to success page
-        } else {
-            const nextStep = currentStep + 1;
-            const nextRoute = updateStep(nextStep); // Update step and get the next route
-            navigate(nextRoute); // Navigate to the next step
-        }
+        console.log('[AboutForm] navigate to prettyUrl:', prettyUrl);
+        //navigate(prettyUrl); // Navigate to the next step
     };
+
+    // const handleNavigation = () => {
+    //     console.log('[AboutForm] handleNavigation isAllComplete:', isAllComplete);
+    //     if (isAllComplete) {
+    //         navigate('/users'); // Go to success page
+    //     } else {
+    //         const nextStep = currentStep + 1;
+    //         const nextRoute = updateStep(nextStep); // Update step and get the next route
+    //         navigate(nextRoute); // Navigate to the next step
+    //     }
+    // };
 
     const handleSubmit = async (values) => {
         const id = currentUser?.id;
@@ -40,7 +40,7 @@ const AboutForm = () => {
             console.log('[AboutForm] about updated successfully!');
             updateCompleteComponents('AboutForm'); // Mark as complete
             console.log('[AboutForm] updateCompleteComponents complete!');
-            handleNavigation(); // Navigate to the next step
+            //handleNavigation(); // Navigate to the next step
             console.log('[AboutForm] handleNavigation complete!');
 
         } catch (error) {

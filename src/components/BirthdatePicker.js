@@ -9,20 +9,12 @@ const BirthdatePicker = () => {
     const { editUser, currentUser, currentStep, updateStep, isAllComplete, updateCompleteComponents } = useContext(AppContext);
     const navigate = useNavigate();
 
-    console.log('[BirthdatePicker] Current user:', currentUser);
-    // todo lets make this falsy
-    console.log('[BirthdatePicker] isAllComplete: ', isAllComplete)
+   // console.log('[BirthdatePicker] Current user:', currentUser);
+
 
 
     const handleNavigation = () => {
-        console.log('[BirthdatePicker] handleNavigation isAllComplete:', isAllComplete);
-        if (isAllComplete) {
-            navigate('/users'); // Go to success page
-        } else {
-            const nextStep = currentStep + 1;
-            const nextRoute = updateStep(nextStep); // Update step and get the next route
-            navigate(nextRoute); // Navigate to the next step
-        }
+
     };
 
 
@@ -37,7 +29,7 @@ const BirthdatePicker = () => {
             console.log('[BirthdatePicker] birthday updated successfully!');
             updateCompleteComponents('BirthdatePicker'); // Mark as complete
             console.log('[BirthdatePicker] updateCompleteComponents complete!');
-            handleNavigation(); // Navigate to the next step
+            //handleNavigation(); // Navigate to the next step
             console.log('[BirthdatePicker] handleNavigation complete!');
         } catch (error) {
             console.error('[BirthdatePicker] Error updating Address:', error);

@@ -9,7 +9,7 @@ const AddressForm = () => {
     const { editUser, currentUser, currentStep, updateStep, isAllComplete, updateCompleteComponents } = useContext(AppContext);
     const navigate = useNavigate();
 
-    console.log('[AddressForm] currentUser:', currentUser);
+    //console.log('[AddressForm] currentUser:', currentUser);
 
 
 // const handleNavigation = () => {
@@ -24,16 +24,7 @@ const AddressForm = () => {
 //     }
 // };
 
-    // const handleNavigation = () => {
-    //     console.log('[AddressForm] handleNavigation isAllComplete:', isAllComplete());
-    //
-    //     if (isAllComplete()) {
-    //         navigate('/users'); // Navigate to the final success page
-    //     } else {
-    //         const nextRoute = updateStep(currentStep + 1); // Dynamically determine the next route
-    //         navigate(nextRoute); // Navigate to the next step
-    //     }
-    // };
+
 
     const handleSubmit = async (values) => {
         const id = currentUser?.id;
@@ -43,17 +34,37 @@ const AddressForm = () => {
             if (!id) {
                 throw new Error('User ID is missing. Cannot proceed with update.');
             }
-
-            await editUser(id, values); // Ensure ID is passed
+            await editUser(id, values);
             console.log('[AddressForm] Address updated successfully!');
-            updateCompleteComponents('AddressForm'); // Mark AddressForm as complete
-            const nextRoute = updateStep(); // Let context decide the next route
-            console.log('[AddressForm] nextRoute:', nextRoute);
-            navigate(nextRoute); // Navigate based on context-provided route
+            updateCompleteComponents('AddressForm'); // Mark as complete
         } catch (error) {
             console.error('[AddressForm] Error updating Address:', error);
         }
     };
+
+    // const handleSubmit = async (values) => {
+    //     const id = currentUser?.id;
+    //     console.log('[AddressForm] Submitting Address with id:', id, ' values:', values);
+    //
+    //     try {
+    //         if (!id) {
+    //             throw new Error('User ID is missing. Cannot proceed with update.');
+    //         }
+    //         await editUser(id, values); // Update user
+    //         console.log('[AddressForm] Address updated successfully!');
+    //         updateCompleteComponents('AddressForm'); // Mark as complete
+    //
+    //         // Trigger navigation based on context's logic
+    //         const nextRoute = updateStep();
+    //         if (nextRoute) {
+    //             navigate(nextRoute); // Navigate only if a route is returned
+    //         }
+    //     } catch (error) {
+    //         console.error('[AddressForm] Error updating Address:', error);
+    //     }
+    // };
+
+
 
 
 

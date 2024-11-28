@@ -2,14 +2,23 @@ import React, { useContext } from 'react';
 import { AppContext } from '../context/ContextProvider';
 import { useNavigate } from 'react-router-dom';
 
-const Card = ({ step }) => {
-    const { adminConfig, updateStep } = useContext(AppContext);
-    const components = adminConfig[step - 2] || [];
+const Card = () => {
+    const { currentUser, adminConfig, updateStep, currentStep, prettyUrl } = useContext(AppContext);
+    const components = adminConfig[currentStep] || [];
     const navigate = useNavigate();
 
+    // lets get how many steps we have
+    const totalSteps = adminConfig.length;
+    console.log('[Card] totalSteps:', totalSteps);
+    // get current step
+    console.log('[Card] currentStep: ', currentStep); // what component by name in an array
+    //lets get the total number of completed components
+    //const totalCompletedComponents = currentUser.completedComponents.length;
+
     const handleNext = () => {
-        updateStep(Number(step) + 1); // Ensure step is a number
-        navigate(`/create-account-${Number(step) + 1}`); // Dynamically navigate to the next step
+        //todo implement the get url
+        console.log('[Card] handleNext');
+        navigate(prettyUrl); // Dynamically navigate to the next step
     };
 
     return (

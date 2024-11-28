@@ -8,13 +8,11 @@ import { TextField, Button, Box, Typography } from '@mui/material';
 const { v4: uuidv4 } = require('uuid');
 
 const CreateUser = () => {
-    const { addUser, currentStep, updateStep, currentUser, setCurrentUser } = useContext(AppContext);
+    const { addUser } = useContext(AppContext);
     const navigate = useNavigate();
 
-    const handleNavigation = (currentStep, updateStep, navigate) => {
-        const nextStep = Number(currentStep) + 1;
-        updateStep(nextStep);
-        navigate(`/create-account-${nextStep}`);
+    const handleNavigation = (currentStep) => {
+        navigate(`/create-account-2`);
     };
     // Formik form setup
     const formik = useFormik({
@@ -47,7 +45,7 @@ const CreateUser = () => {
                 console.log('[CreateUser] Submitting user:', values);
                 const createdUser = await addUser(values); // Call the context function
                 console.log('[CreateUser] User created:', createdUser);
-                handleNavigation(currentStep, updateStep, navigate); // Navigate after success
+                handleNavigation(); // Navigate after success
                 resetForm(); // Clear the form
             } catch (error) {
                 console.error('[CreateUser] Error creating user:', error);
