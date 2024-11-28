@@ -7,8 +7,11 @@ const ContextProvider = ({ children }) => {
     const [userData, setUserData] = useState([]);
     const [currentUser, setCurrentUser] = useState({ id: '', email: '', password:'', about: '', street:'', city:'', state:'', zip:''}); // Default user state
     const [currentStep, setCurrentStep] = useState(0); // Track onboarding step
+    const [currentIndex, setCurrentIndex] = useState(1);
     //const [adminConfig, setAdminConfig] = useState([['AboutForm'], ['AddressForm', 'BirthdatePicker']]);
-    const [adminConfig, setAdminConfig] = useState([['AddressForm'], ['AboutForm', 'BirthdatePicker']]);
+    //const [adminConfig, setAdminConfig] = useState([['AddressForm'], ['AboutForm', 'BirthdatePicker']]);
+    const [adminConfig, setAdminConfig] = useState([['AboutForm', 'BirthdatePicker'], ['AddressForm']]);
+
     const [activeComponents, setActiveComponents] = useState(adminConfig.flat());
     const [completeComponents, setCompleteComponents] = useState([]); // Track completed components
     const [prettyUrl, setPrettyUrl] = useState('create-account-2');
@@ -95,6 +98,7 @@ const ContextProvider = ({ children }) => {
 
 
     const updateStep = () => {
+        console.log('[ContextProvider] Updating step...this should only happen if all the items in the current Step are done');
         const nextStep = currentStep + 1;
         // note:  adminConfig.length can be altered but we just need to let the slide know its ok to route
         let prettyurl = '';
@@ -109,7 +113,8 @@ const ContextProvider = ({ children }) => {
 
         } else {
             // set the pretty url
-            prettyurl = `/create-account-${nextStep}`; // Navigate to the next route
+            setCurrentIndex(currentIndex + 1);
+            prettyurl = `/create-account-${currentIndex}`; // Navigate to the next route
             console.log(`[ContextProvider] Setting Pretty URL: ${prettyurl}`);
             setPrettyUrl(prettyurl);
             setCurrentStep(nextStep); // THEN update current step
