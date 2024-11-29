@@ -3,17 +3,21 @@ import { AppContext } from '../context/ContextProvider';
 import { useNavigate } from 'react-router-dom';
 
 const Card = () => {
-    const { currentUser, adminConfig, updateStep, currentStep, prettyUrl } = useContext(AppContext);
+    const { completeComponents, adminConfig, currentStep, prettyUrl } = useContext(AppContext);
     const components = adminConfig[currentStep] || [];
     const navigate = useNavigate();
 
-    // lets get how many steps we have
+    // lets get how many steps we have for this card
     const totalSteps = adminConfig.length;
     console.log('[Card] totalSteps:', totalSteps);
     // get current step
     console.log('[Card] currentStep: ', currentStep); // what component by name in an array
-    //lets get the total number of completed components
-    //const totalCompletedComponents = currentUser.completedComponents.length;
+    //lets get the total number of completed components for this step
+    const completeComponentsForThisStep = completeComponents.length;
+    // and the currentStep of this Step
+    // currentStep of AdminConfig[currentStep].length
+    const stepProgress = currentStep + 1
+
 
     const handleNext = () => {
         //todo implement the get url
@@ -23,6 +27,10 @@ const Card = () => {
 
     return (
         <div>
+
+            <div>
+                <h4> You have completed {completeComponentsForThisStep} of {totalSteps} Forms for Step {stepProgress} </h4>
+            </div>
             {components.map((component) => {
                 const Component = React.lazy(() => import(`../components/${component}`));
                 return (
@@ -31,7 +39,7 @@ const Card = () => {
                     </React.Suspense>
                 );
             })}
-            <button onClick={handleNext}>Next</button>
+            {/*<button onClick={handleNext}>Next</button>*/}
         </div>
     );
 };
@@ -44,38 +52,3 @@ export default Card;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useContext } from 'react';
-// import { AppContext } from '../context/ContextProvider';
-//
-// const Card = ({ step }) => {
-//     const { adminConfig } = useContext(AppContext);
-//     const components = adminConfig[step - 2] || []; // Adjust step index to match admin config
-//
-//     return (
-//         <div>
-//             {components.map((component) => {
-//                 const Component = React.lazy(() => import(`../components/${component}`));
-//                 return (
-//                     <React.Suspense fallback={<div>Loading...</div>} key={component}>
-//                         <Component />
-//                     </React.Suspense>
-//                 );
-//             })}
-//         </div>
-//     );
-// };
-//
-// export default Card;

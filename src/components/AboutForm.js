@@ -18,16 +18,6 @@ const AboutForm = () => {
         //navigate(prettyUrl); // Navigate to the next step
     };
 
-    // const handleNavigation = () => {
-    //     console.log('[AboutForm] handleNavigation isAllComplete:', isAllComplete);
-    //     if (isAllComplete) {
-    //         navigate('/users'); // Go to success page
-    //     } else {
-    //         const nextStep = currentStep + 1;
-    //         const nextRoute = updateStep(nextStep); // Update step and get the next route
-    //         navigate(nextRoute); // Navigate to the next step
-    //     }
-    // };
 
     const handleSubmit = async (values) => {
         const id = currentUser?.id;

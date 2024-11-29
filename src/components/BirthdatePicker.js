@@ -6,7 +6,7 @@ import { TextField, Button, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const BirthdatePicker = () => {
-    const { editUser, currentUser, currentStep, updateStep, isAllComplete, updateCompleteComponents } = useContext(AppContext);
+    const { editUser, currentUser, currentStep, updateStep, isAllComplete, updateCompleteComponents, prettyUrl } = useContext(AppContext);
     const navigate = useNavigate();
 
    // console.log('[BirthdatePicker] Current user:', currentUser);
@@ -14,6 +14,8 @@ const BirthdatePicker = () => {
 
 
     const handleNavigation = () => {
+
+        navigate(prettyUrl[currentStep + 1]);
 
     };
 

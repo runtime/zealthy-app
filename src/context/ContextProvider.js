@@ -7,14 +7,14 @@ const ContextProvider = ({ children }) => {
     const [userData, setUserData] = useState([]);
     const [currentUser, setCurrentUser] = useState({ id: '', email: '', password:'', about: '', street:'', city:'', state:'', zip:''}); // Default user state
     const [currentStep, setCurrentStep] = useState(0); // Track onboarding step
-    const [currentIndex, setCurrentIndex] = useState(1);
+    const [currentIndex, setCurrentIndex] = useState(1); // Track Index for URLs
     //const [adminConfig, setAdminConfig] = useState([['AboutForm'], ['AddressForm', 'BirthdatePicker']]);
-    //const [adminConfig, setAdminConfig] = useState([['AddressForm'], ['AboutForm', 'BirthdatePicker']]);
-    const [adminConfig, setAdminConfig] = useState([['AboutForm', 'BirthdatePicker'], ['AddressForm']]);
+    const [adminConfig, setAdminConfig] = useState([['AddressForm'], ['AboutForm', 'BirthdatePicker']]);
+    //const [adminConfig, setAdminConfig] = useState([['AboutForm', 'BirthdatePicker'], ['AddressForm']]);
 
     const [activeComponents, setActiveComponents] = useState(adminConfig.flat());
     const [completeComponents, setCompleteComponents] = useState([]); // Track completed components
-    const [prettyUrl, setPrettyUrl] = useState('create-account-2');
+    const [prettyUrl, setPrettyUrl] = useState(`create-account-${currentIndex + 1 }`);
 
 
 
@@ -112,10 +112,12 @@ const ContextProvider = ({ children }) => {
             setPrettyUrl(prettyurl);
 
         } else {
-            // set the pretty url
+            // set the currentIndex pretty url
             setCurrentIndex(currentIndex + 1);
-            prettyurl = `/create-account-${currentIndex}`; // Navigate to the next route
+            // create the prettyurl
+            prettyurl = `/create-account-${currentIndex}`;
             console.log(`[ContextProvider] Setting Pretty URL: ${prettyurl}`);
+            // set the urlstate
             setPrettyUrl(prettyurl);
             setCurrentStep(nextStep); // THEN update current step
             console.log(`[ContextProvider] Advanced to step ${nextStep}`);
@@ -178,6 +180,7 @@ const ContextProvider = ({ children }) => {
     //console.log('[ContextProvider] currentUser:', currentUser);
     console.log('[ContextProvider] adminConfig:', adminConfig); //array of arrays with all components in sub arrays
     console.log('[ContextProvider] currentStep:', currentStep); // 0 <-- which array we are on
+    console.log('[ContextProvider] currentIndex:', currentIndex); // 1 <-- which index we are on
     console.log('[ContextProvider] adminConfig[currentStep]:', adminConfig[currentStep]); // the current array of components at 0 or 1
     console.log('[ContextProvider] prettyUrl:', prettyUrl);
     console.log('[ContextProvider] getProgress():', getProgress());
@@ -195,6 +198,7 @@ const ContextProvider = ({ children }) => {
         isAllComplete,
         updateCompleteComponents,
         currentStep,
+        currentIndex,
         updateStep,
         addUser,
         editUser,
@@ -209,59 +213,3 @@ const ContextProvider = ({ children }) => {
 
 export default ContextProvider;
 
-
-// import React, { createContext, useState, useEffect } from 'react';
-// import { createUser, updateUser, getUsers } from './api';
-//
-// const AppContext = createContext();
-//
-// export const ContextProvider = ({ children }) => {
-//     const [userData, setUserData] = useState([]);
-//     const [adminConfig, setAdminConfig] = useState([['about'], ['address', 'birthdate']]);
-//
-//     useEffect(() => {
-//         const fetchUsers = async () => {
-//             try {
-//                 const response = await getUsers();
-//                 setUserData(response.data);
-//             } catch (error) {
-//                 console.error('Error fetching users:', error);
-//             }
-//         };
-//         fetchUsers();
-//     }, []);
-//
-//     const addUser = async (user) => {
-//         try {
-//             const response = await createUser(user);
-//             setUserData((prev) => [...prev, response.data]); // Assuming the API returns the created user
-//         } catch (error) {
-//             console.error('Error adding user:', error);
-//         }
-//     };
-//
-//     const editUser = async (userId, updates) => {
-//         try {
-//             await updateUser(userId, updates);
-//             // Update state after successful edit
-//             setUserData((prev) =>
-//                 prev.map((user) => (user.id === userId ? { ...user, ...updates } : user))
-//             );
-//         } catch (error) {
-//             console.error('Error updating user:', error);
-//         }
-//     };
-//
-//     const value = {
-//         userData,
-//         setUserData,
-//         adminConfig,
-//         setAdminConfig,
-//         addUser,
-//         editUser,
-//     };
-//
-//     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-// };
-//
-// export default ContextProvider;
