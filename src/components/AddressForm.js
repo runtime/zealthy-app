@@ -6,16 +6,30 @@ import { TextField, Button, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const AddressForm = () => {
-    const { editUser, currentUser, currentStep, updateStep } = useContext(AppContext);
+    const {
+        editUser,
+        currentUser,
+        updateCompleteComponents,
+        currentStep,
+        adminConfig,
+        prettyUrl,
+    } = useContext(AppContext);
     const navigate = useNavigate();
 
-    console.log('[AddressForm] currentUser:', currentUser);
+    // Total components and completed components in the current step
+    const stepsInThisStep = adminConfig[currentStep]?.length || 0;
+
+    // const stepsCompleteForThisStep = adminConfig[currentStep]?.filter((component) =>
+    //     currentUser?.completeComponents?.includes(component)
+    // ).length;
+    //
+    // // Check if all components in the current step are complete
+    // const allComponentsComplete = stepsCompleteForThisStep === stepsInThisStep;
+
 
     const handleNavigation = () => {
-        console.log('[AddressForm] handleNavigation currentStep:', currentStep)
-        //const nextStep = currentStep + 1; // Increment step
-        //updateStep(nextStep); // Update step in context
-        //navigate(`/create-account-${nextStep}`); // Navigate to the next step
+        console.log('[AddressForm] All components for this step are complete. Navigating to:', prettyUrl);
+        navigate(prettyUrl);
     };
 
     const handleSubmit = async (values) => {
@@ -26,10 +40,13 @@ const AddressForm = () => {
             if (!id) {
                 throw new Error('User ID is missing. Cannot proceed with update.');
             }
-
-            await editUser(id, values); // Ensure ID is passed
+            // Update the user in the backend
+            await editUser(id, values);
             console.log('[AddressForm] Address updated successfully!');
-            handleNavigation(); // Navigate to the next step
+
+            // Mark the form as complete
+            updateCompleteComponents('AddressForm');
+            handleNavigation();
         } catch (error) {
             console.error('[AddressForm] Error updating Address:', error);
         }
@@ -37,14 +54,10 @@ const AddressForm = () => {
 
     const formik = useFormik({
         initialValues: {
-            id: currentUser.id,
-            email: currentUser.email,
-            password: currentUser.password,
             street: currentUser.street || '',
             city: currentUser.city || '',
-            usersstate: currentUser.usersstate || '', // Updated field name
+            usersstate: currentUser.usersstate || '', // Updated field name for state
             zip: currentUser.zip || '',
-            about: currentUser.about || '',
         },
         validationSchema: Yup.object({
             street: Yup.string().required('Street is required'),
@@ -54,7 +67,7 @@ const AddressForm = () => {
                 .matches(/^\d{5}$/, 'Zip code must be 5 digits')
                 .required('Zip code is required'),
         }),
-        onSubmit: (values, { resetForm }) => handleSubmit(values, resetForm),
+        onSubmit: (values) => handleSubmit(values),
     });
 
     return (
@@ -101,16 +114,16 @@ const AddressForm = () => {
                 />
                 <TextField
                     fullWidth
-                    id="state" // Updated field name
-                    name="usersstate" // Updated field name
+                    id="usersstate"
+                    name="usersstate"
                     label="State"
                     variant="outlined"
                     margin="normal"
-                    value={formik.values.usersstate} // Updated field name
+                    value={formik.values.usersstate}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    error={formik.touched.usersstate && Boolean(formik.errors.usersstate)} // Updated field name
-                    helperText={formik.touched.usersstate && formik.errors.usersstate} // Updated field name
+                    error={formik.touched.usersstate && Boolean(formik.errors.usersstate)}
+                    helperText={formik.touched.usersstate && formik.errors.usersstate}
                 />
                 <TextField
                     fullWidth
@@ -125,7 +138,13 @@ const AddressForm = () => {
                     error={formik.touched.zip && Boolean(formik.errors.zip)}
                     helperText={formik.touched.zip && formik.errors.zip}
                 />
-                <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                <Button
+                    fullWidth
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                >
                     Submit
                 </Button>
             </form>
@@ -137,150 +156,3 @@ export default AddressForm;
 
 
 
-
-
-
-
-
-// import React, { useContext } from 'react';
-// import { useFormik } from 'formik';
-// import * as Yup from 'yup';
-// import { AppContext } from '../context/ContextProvider';
-// import { TextField, Button, Box, Typography } from '@mui/material';
-// import { useNavigate } from 'react-router-dom';
-//
-// const AddressForm = () => {
-//     const { editUser, currentUser, currentStep, updateStep } = useContext(AppContext);
-//     const navigate = useNavigate();
-//
-//     console.log('[AddressForm] currentUser:', currentUser);
-//
-//     const handleNavigation = () => {
-//         const nextStep = currentStep + 1; // Increment step
-//         updateStep(nextStep); // Update step in context
-//         navigate(`/create-account-${nextStep}`); // Navigate to the next step
-//     };
-//
-//     const handleSubmit = async (values) => {
-//
-//         const id = currentUser.id
-//         console.log('[AddressForm] Submitting Address by id:', id, ' values:', values);
-//
-//         try {
-//             await editUser(id, values); // Ensure ID is passed
-//             //handleNavigation()
-//             console.log('[AddressForm] Address updated successfully!');
-//         } catch (error) {
-//             console.error('[AddressForm] Error updating Address:', error);
-//         }
-//     };
-//
-//
-//     const formik = useFormik({
-//         initialValues: {
-//             id: currentUser.id,
-//             email: currentUser.email,
-//             password: currentUser.password,
-//             street: currentUser.street || '',
-//             city: currentUser.city || '',
-//             usersstate: currentUser.usersstate || '',
-//             zip: currentUser.zip || '',
-//             about: currentUser.about || '',
-//         },
-//         validationSchema: Yup.object({
-//             street: Yup.string().required('Street is required'),
-//             city: Yup.string().required('City is required'),
-//             usersstate: Yup.string().required('State is required'),
-//             zip: Yup.string()
-//                 .matches(/^\d{5}$/, 'Zip code must be 5 digits')
-//                 .required('Zip code is required'),
-//         }),
-//         // onSubmit: async (values) => {
-//         //     console.log('[AddressForm] Submitting Address:', values);
-//         //     try {
-//         //         await editUser(currentUser.id, values); // Ensure ID is passed
-//         //         console.log('[AddressForm] Address updated successfully!');
-//         //     } catch (error) {
-//         //         console.error('[AddressForm] Error updating Address:', error);
-//         //     }
-//         // },
-//         onSubmit: (values, { resetForm }) => handleSubmit(values, resetForm),
-//     });
-//
-//     return (
-//         <Box
-//             sx={{
-//                 maxWidth: 400,
-//                 margin: 'auto',
-//                 mt: 5,
-//                 p: 3,
-//                 boxShadow: 3,
-//                 borderRadius: 2,
-//                 bgcolor: 'background.paper',
-//             }}
-//         >
-//             <Typography variant="h5" mb={2} textAlign="center">
-//                 Address
-//             </Typography>
-//             <form onSubmit={formik.handleSubmit}>
-//                 <TextField
-//                     fullWidth
-//                     id="street"
-//                     name="street"
-//                     label="Street"
-//                     variant="outlined"
-//                     margin="normal"
-//                     value={formik.values.street}
-//                     onChange={formik.handleChange}
-//                     onBlur={formik.handleBlur}
-//                     error={formik.touched.street && Boolean(formik.errors.street)}
-//                     helperText={formik.touched.street && formik.errors.street}
-//                 />
-//                 <TextField
-//                     fullWidth
-//                     id="city"
-//                     name="city"
-//                     label="City"
-//                     variant="outlined"
-//                     margin="normal"
-//                     value={formik.values.city}
-//                     onChange={formik.handleChange}
-//                     onBlur={formik.handleBlur}
-//                     error={formik.touched.city && Boolean(formik.errors.city)}
-//                     helperText={formik.touched.city && formik.errors.city}
-//                 />
-//                 <TextField
-//                     fullWidth
-//                     id="state"
-//                     name="state"
-//                     label="State"
-//                     variant="outlined"
-//                     margin="normal"
-//                     value={formik.values.state}
-//                     onChange={formik.handleChange}
-//                     onBlur={formik.handleBlur}
-//                     error={formik.touched.state && Boolean(formik.errors.state)}
-//                     helperText={formik.touched.state && formik.errors.state}
-//                 />
-//                 <TextField
-//                     fullWidth
-//                     id="zip"
-//                     name="zip"
-//                     label="Zip Code"
-//                     variant="outlined"
-//                     margin="normal"
-//                     value={formik.values.zip}
-//                     onChange={formik.handleChange}
-//                     onBlur={formik.handleBlur}
-//                     error={formik.touched.zip && Boolean(formik.errors.zip)}
-//                     helperText={formik.touched.zip && formik.errors.zip}
-//                 />
-//                 <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-//                     Submit
-//                 </Button>
-//             </form>
-//         </Box>
-//     );
-// };
-//
-// export default AddressForm;

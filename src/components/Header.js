@@ -7,11 +7,12 @@ const Header = () => {
     const theme = useTheme();
 
     return (
-        <div style={{ backgroundColor: theme.palette.background.default }}>
-            <h1 style={{ color: theme.palette.primary.main }}>Hello!</h1>
-            <Button variant="contained" color="secondary">
-                Click Me
-            </Button>
+        <div style={{backgroundColor: theme.palette.background.default}}>
+            {/*<h3 style={{color: theme.palette.primary.main}}>Hello!</h3>*/}
+            <h3 style={{color: theme.palette.secondary.main}}>Zealthy API!</h3>
+            {/*<Button variant="contained" color="secondary">*/}
+            {/*    Click Me*/}
+            {/*</Button>*/}
         </div>
     );
 };

@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import { AppContext } from '../context/ContextProvider';
 
 const Breadcrumbs = () => {
-    const { currentStep } = useContext(AppContext);
+    const { currentIndex, adminConfig, currentStep} = useContext(AppContext);
 
     return (
         <div>
-            <span style={{ fontWeight: currentStep === 1 ? 'bold' : 'normal' }}>Step 1: Create Account</span> &gt;
-            <span style={{ fontWeight: currentStep === 2 ? 'bold' : 'normal' }}>Step 2: Additional Info</span> &gt;
-            <span style={{ fontWeight: currentStep === 3 ? 'bold' : 'normal' }}>Step 3: Final Details</span>
+            <span style={{ fontWeight: currentIndex === 1 ? 'bold' : 'normal' }}>Create Account</span> &gt;
+            <span style={{ fontWeight: currentIndex === 2 ? 'bold' : 'normal' }}>{adminConfig[0]}</span> &gt;
+            <span style={{ fontWeight: currentIndex === 3 ? 'bold' : 'normal' }}>{adminConfig[1]}</span>
         </div>
     );
 };
