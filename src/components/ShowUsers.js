@@ -6,31 +6,32 @@ const ShowUsers = () => {
     const { userData, setUserData } = useContext(AppContext);
     const navigate = useNavigate();
 
-    console.log('[ShowUsers], userData: ', userData)
+    //console.log('[ShowUsers], userData: ', userData)
 
     let content = 'loading....'
 
     useEffect(() => {
         if (userData.length === 0) {
-            console.log('[ShowUsers] userData is undefined or null');
+            //console.log('[ShowUsers] userData is undefined or null');
 
         }
         const fetchUsers = async () => {
             try {
+                //todo update to utilize the api
                 const response = await fetch('https://sr6oj50p5m.execute-api.us-east-1.amazonaws.com/prod/users'); // Adjust endpoint as needed
                 const rawData = await response.json(); // Parse initial response
-                console.log('[ShowUsers] Fetched raw data:', rawData);
+                //console.log('[ShowUsers] Fetched raw data:', rawData);
 
                 // Parse the `body` if it's a string
                 const parsedBody = rawData.body ? JSON.parse(rawData.body) : rawData;
-                console.log('[ShowUsers] Parsed body:', parsedBody);
+                //console.log('[ShowUsers] Parsed body:', parsedBody);
 
                 // Check if `Items` exists and is an array
                 if (parsedBody && Array.isArray(parsedBody.Items)) {
-                    console.log('[ShowUsers] Items:', parsedBody.Items);
+                    //console.log('[ShowUsers] Items:', parsedBody.Items);
                     setUserData(parsedBody.Items);
                 } else {
-                    console.warn('[ShowUsers] Unexpected data format:', parsedBody);
+                    //console.warn('[ShowUsers] Unexpected data format:', parsedBody);
                     setUserData([]); // Set empty array if data is invalid
                 }
             } catch (error) {

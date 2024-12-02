@@ -42,13 +42,13 @@ const CreateUser = () => {
         }),
         onSubmit: async (values, { resetForm }) => {
             try {
-                console.log('[CreateUser] Submitting user:', values);
+                //console.log('[CreateUser] Submitting user:', values);
                 const createdUser = await addUser(values); // Call the context function
-                console.log('[CreateUser] User created:', createdUser);
+                //console.log('[CreateUser] User created:', createdUser);
                 handleNavigation(); // Navigate after success
                 resetForm(); // Clear the form
             } catch (error) {
-                console.error('[CreateUser] Error creating user:', error);
+                //console.error('[CreateUser] Error creating user:', error);
                 alert('Failed to create user. Please try again.');
             }
         },

@@ -9,10 +9,10 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
     const theme = useTheme();
-    const { currentUser, prettyUrl } = useContext(AppContext);
+    const { currentUser } = useContext(AppContext);
     const navigate = useNavigate();
 
-    console.log('[Home] currentUser:', currentUser);
+    //console.log('[Home] currentUser:', currentUser);
 
     const handleNavigation = () => {
         // if we come here from the home page, we need to clear the current user if one exists as we want to always create an account from this button

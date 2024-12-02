@@ -9,32 +9,14 @@ const AddressForm = () => {
     const {
         editUser,
         currentUser,
-        updateCompleteComponents,
-        currentStep,
-        adminConfig,
-        prettyUrl,
+        updateCompleteComponents
     } = useContext(AppContext);
     const navigate = useNavigate();
 
     // Total components and completed components in the current step
-    const stepsInThisStep = adminConfig[currentStep]?.length || 0;
-
-    // const stepsCompleteForThisStep = adminConfig[currentStep]?.filter((component) =>
-    //     currentUser?.completeComponents?.includes(component)
-    // ).length;
-    //
-    // // Check if all components in the current step are complete
-    // const allComponentsComplete = stepsCompleteForThisStep === stepsInThisStep;
-
-
-    const handleNavigation = () => {
-        console.log('[AddressForm] All components for this step are complete. Navigating to:', prettyUrl);
-        navigate(prettyUrl);
-    };
-
     const handleSubmit = async (values) => {
         const id = currentUser?.id;
-        console.log('[AddressForm] Submitting Address with id:', id, ' values:', values);
+        //console.log('[AddressForm] Submitting Address with id:', id, ' values:', values);
 
         try {
             if (!id) {
@@ -42,11 +24,10 @@ const AddressForm = () => {
             }
             // Update the user in the backend
             await editUser(id, values);
-            console.log('[AddressForm] Address updated successfully!');
+            //console.log('[AddressForm] Address updated successfully!');
 
             // Mark the form as complete
             updateCompleteComponents('AddressForm');
-            handleNavigation();
         } catch (error) {
             console.error('[AddressForm] Error updating Address:', error);
         }
