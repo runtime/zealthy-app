@@ -16,10 +16,15 @@ const ContextProvider = ({ children }) => {
         zip: '',
     });
     const [currentStep, setCurrentStep] = useState(0);
-    const [adminConfig] = useState([
+    // const [adminConfig] = useState([
+    //     ['AddressForm'],
+    //     ['AboutForm', 'BirthdatePicker'],
+    // ]);
+    const [adminConfig, setAdminConfig] = useState([
         ['AddressForm'],
         ['AboutForm', 'BirthdatePicker'],
     ]);
+
     const [completeComponents, setCompleteComponents] = useState([]);
 
     const updateCompleteComponents = (componentName) => {
@@ -105,6 +110,7 @@ const ContextProvider = ({ children }) => {
                 currentStep,
                 setCurrentStep,
                 adminConfig,
+                setAdminConfig,
                 completeComponents,
                 setCompleteComponents,
                 updateCompleteComponents,

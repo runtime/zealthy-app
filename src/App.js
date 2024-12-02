@@ -9,11 +9,13 @@ import ErrorPage from './components/ErrorPage';
 import Home from './components/Home';
 import Complete from './components/Complete';
 import Breadcrumbs from './components/Breadcrumbs';
+import Header from './components/Header';
 
 const App = () => {
   return (
       <ContextProvider>
         <Router>
+          {/*<Header />*/}
           <Breadcrumbs />
           <Routes>
             <Route path="/" element={<Home />} />
