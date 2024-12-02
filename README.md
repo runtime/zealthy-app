@@ -1,8 +1,8 @@
-# Getting Started with Create React App
-
+# React App
+## Create and Onboard User with Dynamic Funnel
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Available Scripts
 
 In the project directory, you can run:
 
@@ -22,12 +22,12 @@ You can configure the onboarding components by clicking on the admin button
 /admin
 ```
 
-#### `create user`
-You are prompted to create a user to begin. this initializes a user object and it is submitted to the api and saved to the database
+#### `create account`
+You are prompted to create an account to begin. 
 ```
-'/create-user'
+'/create-account'
 ```
-you can check out the user data at any time and see how the current user is being updated
+you can check out the user data at any time and see how the current user is being updated in the db
 ```
 /users
 ```
@@ -38,8 +38,13 @@ based on the admin config you chose you will be given two onboarding steps. when
 
 #### Breadcrumbs
 The app has nav breadcrumbs that show you each step. 
+```
+/user-onboarding-{step}
+```
 
 #### Restarting the app
-in the /users page is a restart app button that will reset the app state
+in the /users page is a restart app button that will reset the app state and clear the currentUser.
 
-#### :)
+#### Enjoy
+
+:)
