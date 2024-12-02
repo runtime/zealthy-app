@@ -8,11 +8,13 @@ import ShowUsers from './components/ShowUsers';
 import ErrorPage from './components/ErrorPage';
 import Home from './components/Home';
 import Complete from './components/Complete';
+import Breadcrumbs from './components/Breadcrumbs';
 
 const App = () => {
   return (
       <ContextProvider>
         <Router>
+          <Breadcrumbs />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />

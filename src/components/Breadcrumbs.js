@@ -1,15 +1,31 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../context/ContextProvider';
+import { Breadcrumbs as MUIBreadcrumbs, Link, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Breadcrumbs = () => {
-    const { currentIndex, adminConfig, currentStep} = useContext(AppContext);
+    const { currentStep, adminConfig } = useContext(AppContext);
+    const navigate = useNavigate();
+
+    const breadcrumbs = adminConfig.map((step, index) => {
+        const stepLabel = `Step ${index + 1}`;
+        return (
+            <Link
+                key={index}
+                underline="hover"
+                color={index === currentStep ? 'text.primary' : 'inherit'}
+                onClick={() => navigate(`/user-onboarding-${index + 1}`)}
+                sx={{ cursor: 'pointer' }}
+            >
+                {stepLabel}
+            </Link>
+        );
+    });
 
     return (
-        <div>
-            <span style={{ fontWeight: currentIndex === 1 ? 'bold' : 'normal' }}>Create Account</span> &gt;
-            <span style={{ fontWeight: currentIndex === 2 ? 'bold' : 'normal' }}>{adminConfig[0]}</span> &gt;
-            <span style={{ fontWeight: currentIndex === 3 ? 'bold' : 'normal' }}>{adminConfig[1]}</span>
-        </div>
+        <MUIBreadcrumbs aria-label="breadcrumb">
+            {breadcrumbs}
+        </MUIBreadcrumbs>
     );
 };
 
