@@ -10,9 +10,11 @@ import Home from './components/Home';
 import Complete from './components/Complete';
 import Breadcrumbs from './components/Breadcrumbs';
 import Header from './components/Header';
+import MaterialTheme from './styles/MaterialTheme';
 
 const App = () => {
   return (
+      <MaterialTheme>
       <ContextProvider>
         <Router>
           <Header />
@@ -30,6 +32,7 @@ const App = () => {
           </Routes>
         </Router>
       </ContextProvider>
+      </MaterialTheme>
   );
 };
 

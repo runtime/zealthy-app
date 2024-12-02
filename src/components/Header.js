@@ -20,17 +20,18 @@ const Header = () => {
     // if there is a currentUser we do not want to change the config or create an account
     if (currentUser.email ==='') {
         content = (
-            <div style={{backgroundColor: theme.palette.background.default}}>
+            <div>
 
                 <Button variant="contained" color="secondary" onClick={() => navigate('/create-account')}>
                     CREATE ACCOUNT
                 </Button>
 
-                <Button variant="contained" color="grey" onClick={() => navigate('/admin')}>
-                    ADMIN
+                <Button variant="contained" color="primary" onClick={() => navigate('/users')}>
+                    SHOW USERS
                 </Button>
-                <Button variant="contained" color="grey" onClick={() => navigate('/users')}>
-                    USERS
+
+                <Button variant="contained" color="warning" onClick={() => navigate('/admin')}>
+                    ADMIN
                 </Button>
 
 
@@ -38,9 +39,9 @@ const Header = () => {
         );
     } else {
         content = (
-            <div style={{backgroundColor: theme.palette.background.default}}>
-                <h3 style={{color: theme.palette.primary.main}}>{currentUser.email}!</h3>
-                <Button variant="contained" color="grey" onClick={() => navigate('/users')}>
+            <div>
+                <h3 style={{color: theme.palette.secondary.main}}>{currentUser.email}!</h3>
+                <Button variant="contained" color="primary" onClick={() => navigate('/users')}>
                     SHOW USERS
                 </Button>
             </div>
@@ -48,7 +49,7 @@ const Header = () => {
     }
 
     return (
-        <Box sx={{ flexGrow: 1, backgroundColor: theme.palette.background.default, padding: '10px' }}>
+        <Box sx={{ flexGrow: 1, backgroundColor: theme.palette.background.alternate, padding: '10px' }}>
             <Typography variant="h6" style={{color: theme.palette.primary.main}}>Welcome :)</Typography>
             {content}
         </Box>
