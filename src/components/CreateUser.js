@@ -11,9 +11,9 @@ const CreateUser = () => {
     const { addUser } = useContext(AppContext);
     const navigate = useNavigate();
 
-    const handleNavigation = (currentStep) => {
-        navigate(`/create-account-2`);
-    };
+    const handleNavigation = () => {
+        navigate('/user-onboarding-1');
+    }
     // Formik form setup
     const formik = useFormik({
         initialValues: {

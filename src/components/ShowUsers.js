@@ -15,7 +15,7 @@ const ShowUsers = () => {
         }
         const fetchUsers = async () => {
             try {
-                const response = await fetch('https://dplojg10ic.execute-api.us-east-1.amazonaws.com/prod/users'); // Adjust endpoint as needed
+                const response = await fetch('https://sr6oj50p5m.execute-api.us-east-1.amazonaws.com/prod/users'); // Adjust endpoint as needed
                 const rawData = await response.json(); // Parse initial response
                 console.log('[ShowUsers] Fetched raw data:', rawData);
 
@@ -56,6 +56,7 @@ const ShowUsers = () => {
                         <th>State</th>
                         <th>Zip</th>
                         <th>About</th>
+                        <th>Birthdate</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -66,9 +67,10 @@ const ShowUsers = () => {
                             <td>{user.password}</td>
                             <td>{user.street}</td>
                             <td>{user.city}</td>
-                            <td>{user.state}</td>
+                            <td>{user.usersstate}</td>
                             <td>{user.zip}</td>
                             <td>{user.about}</td>
+                            <td>{user.birthdate}</td>
                         </tr>
                     ))}
                     </tbody>

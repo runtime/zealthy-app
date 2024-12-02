@@ -6,17 +6,34 @@ import { TextField, Button, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const AboutForm = () => {
-    const { editUser, currentUser, currentStep, updateStep, isAllComplete, updateCompleteComponents, prettyUrl } = useContext(AppContext); // Access the currentUser
+    const { editUser, currentUser, adminConfig, currentStep, completeComponents, updateCompleteComponents, prettyUrl } = useContext(AppContext); // Access the currentUser
     const navigate = useNavigate();
 
     //console.log('[AboutForm] currentUser:', currentUser);
 
+    // Navigation logic
+    const step = currentStep;
+    console.log('[AboutForm] current step in this step: step: ', step);
+    const stepsInThisStep = adminConfig[currentStep]?.length || 0;
+    console.log('total number of steps components for this slide: ', stepsInThisStep);
+    //todo reset or get how many are complete this step
+    const howManyStepsAreComplete = completeComponents.length;
+    console.log('[AboutForm] howManyStepsAreComplete: ', howManyStepsAreComplete);
+    const completeComponentsForThisStep = completeComponents.length;
+    console.log('[AboutForm] total number of completed components for this step: ', completeComponentsForThisStep);
 
-    // Navigation handler
+
+
+
     const handleNavigation = () => {
-        console.log('[AboutForm] navigate to prettyUrl:', prettyUrl);
-        //navigate(prettyUrl); // Navigate to the next step
-    };
+        if (stepsInThisStep === howManyStepsAreComplete) {
+            // If all components are complete, navigate to the next step
+            navigate(prettyUrl);
+        } else {
+            // dont navigate
+            console.log('[AddressForm] Not all components are complete. Cannot proceed.');
+        }
+    }
 
 
     const handleSubmit = async (values) => {
@@ -30,7 +47,7 @@ const AboutForm = () => {
             console.log('[AboutForm] about updated successfully!');
             updateCompleteComponents('AboutForm'); // Mark as complete
             console.log('[AboutForm] updateCompleteComponents complete!');
-            //handleNavigation(); // Navigate to the next step
+            handleNavigation(); // Navigate to the next step
             console.log('[AboutForm] handleNavigation complete!');
 
         } catch (error) {

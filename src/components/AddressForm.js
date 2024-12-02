@@ -6,26 +6,31 @@ import { TextField, Button, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const AddressForm = () => {
-    const { editUser, currentUser, updateCompleteComponents, completeComponents, adminConfig, currentStep, prettyUrl,  } = useContext(AppContext);
+    const {
+        editUser,
+        currentUser,
+        updateCompleteComponents,
+        currentStep,
+        adminConfig,
+        prettyUrl,
+    } = useContext(AppContext);
     const navigate = useNavigate();
 
-    //console.log('[AddressForm] currentUser:', currentUser);
-    const totalSteps = adminConfig.length;
-    console.log('[Card] totalSteps:', totalSteps);
-    // get current step
-    console.log('[Card] currentStep: ', currentStep); // what component by name in an array
-    //lets get the total number of completed components for this step
-    const completeComponentsForThisStep = completeComponents.length;
-    // and the currentStep of this Step
-    // currentStep of AdminConfig[currentStep].length
-    const stepProgress = currentStep + 1
+    // Total components and completed components in the current step
+    const stepsInThisStep = adminConfig[currentStep]?.length || 0;
+
+    // const stepsCompleteForThisStep = adminConfig[currentStep]?.filter((component) =>
+    //     currentUser?.completeComponents?.includes(component)
+    // ).length;
+    //
+    // // Check if all components in the current step are complete
+    // const allComponentsComplete = stepsCompleteForThisStep === stepsInThisStep;
+
 
     const handleNavigation = () => {
-        if (completeComponentsForThisStep === totalSteps) {
-            // If all components are complete, navigate to the next step
-          navigate(prettyUrl);
-        }
-    }
+        console.log('[AddressForm] All components for this step are complete. Navigating to:', prettyUrl);
+        navigate(prettyUrl);
+    };
 
     const handleSubmit = async (values) => {
         const id = currentUser?.id;
@@ -35,51 +40,24 @@ const AddressForm = () => {
             if (!id) {
                 throw new Error('User ID is missing. Cannot proceed with update.');
             }
+            // Update the user in the backend
             await editUser(id, values);
             console.log('[AddressForm] Address updated successfully!');
-            updateCompleteComponents('AddressForm'); // Mark as complete
-            //console.log('[AddressForm] updateCompleteComponents isAllComplete:', isAllComplete);
-            handleNavigation()
+
+            // Mark the form as complete
+            updateCompleteComponents('AddressForm');
+            handleNavigation();
         } catch (error) {
             console.error('[AddressForm] Error updating Address:', error);
         }
     };
 
-    // const handleSubmit = async (values) => {
-    //     const id = currentUser?.id;
-    //     console.log('[AddressForm] Submitting Address with id:', id, ' values:', values);
-    //
-    //     try {
-    //         if (!id) {
-    //             throw new Error('User ID is missing. Cannot proceed with update.');
-    //         }
-    //         await editUser(id, values); // Update user
-    //         console.log('[AddressForm] Address updated successfully!');
-    //         updateCompleteComponents('AddressForm'); // Mark as complete
-    //
-    //         // Trigger navigation based on context's logic
-    //         const nextRoute = updateStep();
-    //         if (nextRoute) {
-    //             navigate(nextRoute); // Navigate only if a route is returned
-    //         }
-    //     } catch (error) {
-    //         console.error('[AddressForm] Error updating Address:', error);
-    //     }
-    // };
-
-
-
-
     const formik = useFormik({
         initialValues: {
-            id: currentUser.id,
-            email: currentUser.email,
-            password: currentUser.password,
             street: currentUser.street || '',
             city: currentUser.city || '',
-            usersstate: currentUser.usersstate || '', // Updated field name
+            usersstate: currentUser.usersstate || '', // Updated field name for state
             zip: currentUser.zip || '',
-            about: currentUser.about || '',
         },
         validationSchema: Yup.object({
             street: Yup.string().required('Street is required'),
@@ -89,7 +67,7 @@ const AddressForm = () => {
                 .matches(/^\d{5}$/, 'Zip code must be 5 digits')
                 .required('Zip code is required'),
         }),
-        onSubmit: (values, { resetForm }) => handleSubmit(values, resetForm),
+        onSubmit: (values) => handleSubmit(values),
     });
 
     return (
@@ -136,16 +114,16 @@ const AddressForm = () => {
                 />
                 <TextField
                     fullWidth
-                    id="state" // Updated field name
-                    name="usersstate" // Updated field name
+                    id="usersstate"
+                    name="usersstate"
                     label="State"
                     variant="outlined"
                     margin="normal"
-                    value={formik.values.usersstate} // Updated field name
+                    value={formik.values.usersstate}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    error={formik.touched.usersstate && Boolean(formik.errors.usersstate)} // Updated field name
-                    helperText={formik.touched.usersstate && formik.errors.usersstate} // Updated field name
+                    error={formik.touched.usersstate && Boolean(formik.errors.usersstate)}
+                    helperText={formik.touched.usersstate && formik.errors.usersstate}
                 />
                 <TextField
                     fullWidth
@@ -160,7 +138,13 @@ const AddressForm = () => {
                     error={formik.touched.zip && Boolean(formik.errors.zip)}
                     helperText={formik.touched.zip && formik.errors.zip}
                 />
-                <Button fullWidth type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+                <Button
+                    fullWidth
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    sx={{ mt: 2 }}
+                >
                     Submit
                 </Button>
             </form>
@@ -169,3 +153,6 @@ const AddressForm = () => {
 };
 
 export default AddressForm;
+
+
+
