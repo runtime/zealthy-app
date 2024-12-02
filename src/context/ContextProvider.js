@@ -22,7 +22,9 @@ const ContextProvider = ({ children }) => {
     // ]);
     const [adminConfig, setAdminConfig] = useState([
         ['AddressForm'],
+
         ['AboutForm', 'BirthdatePicker'],
+        ['AddressForm'],
     ]);
 
     const [completeComponents, setCompleteComponents] = useState([]);
