@@ -16,12 +16,13 @@ const ContextProvider = ({ children }) => {
         zip: '',
     });
     const [currentStep, setCurrentStep] = useState(0);
-    // const [adminConfig, setAdminConfig] = useState([
+    // const [adminConfig] = useState([
     //     ['AddressForm'],
     //     ['AboutForm', 'BirthdatePicker'],
     // ]);
-
     const [adminConfig, setAdminConfig] = useState([
+        ['AddressForm'],
+
         ['AboutForm', 'BirthdatePicker'],
         ['AddressForm'],
     ]);

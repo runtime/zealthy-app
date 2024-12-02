@@ -15,8 +15,9 @@ const Home = () => {
     console.log('[Home] currentUser:', currentUser);
 
     const handleNavigation = () => {
+        // if we come here from the home page, we need to clear the current user if one exists as we want to always create an account from this button
         if (currentUser.id != '') {
-            navigate(prettyUrl);
+            window.location.href = '/create-account';
             return;
         }
         navigate('/create-account');
