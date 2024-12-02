@@ -6,32 +6,8 @@ import { TextField, Button, Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const BirthdatePicker = () => {
-    const { editUser, currentUser, currentStep, completeComponents, adminConfig, updateCompleteComponents, prettyUrl } = useContext(AppContext);
-    const navigate = useNavigate();
+    const { editUser, currentUser, updateCompleteComponents } = useContext(AppContext);
 
-   // console.log('[BirthdatePicker] Current user:', currentUser);
-
-    const step = currentStep;
-    console.log('[BirthdayPicker] current step in this step: step: ', step);
-    const stepsInThisStep = adminConfig[currentStep]?.length || 0;
-
-    console.log('[BirthdayPicker] total number of steps components for this slide: ', stepsInThisStep);
-    //todo reset or get how many are complete this step
-    const howManyStepsAreComplete = completeComponents.length;
-    console.log('[BirthdayPicker] - howManyStepsAreComplete: ', howManyStepsAreComplete);
-    //const completeComponentsForThisStep = completeComponents.length;
-    //console.log('total number of completed components for this step: ', completeComponentsForThisStep);
-
-
-    // const handleNavigation = () => {
-    //     if (stepsInThisStep === howManyStepsAreComplete) {
-    //         // If all components are complete, navigate to the next step
-    //         navigate(prettyUrl);
-    //     } else {
-    //         // dont navigate
-    //         console.log('[BirthdayPicker] Not all components are complete. Cannot proceed.');
-    //     }
-    // }
 
     const handleSubmit = async (values) => {
         const id = currentUser?.id;
@@ -41,11 +17,9 @@ const BirthdatePicker = () => {
                 throw new Error('User ID is missing. Cannot proceed with update.');
             }
             await editUser(id, values); // Ensure ID is passed
-            console.log('[BirthdatePicker] birthday updated successfully!');
+            //console.log('[BirthdatePicker] birthday updated successfully!');
             updateCompleteComponents('BirthdatePicker'); // Mark as complete
-            console.log('[BirthdatePicker] updateCompleteComponents complete!');
-            //handleNavigation(); // Navigate to the next step
-            console.log('[BirthdatePicker] handleNavigation complete!');
+            //console.log('[BirthdatePicker] updateCompleteComponents complete!');
         } catch (error) {
             console.error('[BirthdatePicker] Error updating Address:', error);
         }
@@ -63,17 +37,6 @@ const BirthdatePicker = () => {
                 .required('Birthdate is required'),
         }),
         onSubmit: (values) => handleSubmit(values),
-        // onSubmit: async (values, { resetForm }) => {
-        //     console.log('[BirthdatePicker] Submitting Birthdate:', values);
-        //     try {
-        //         await editUser(currentUser.id, values); // Update user with birthdate
-        //         console.log('[BirthdatePicker] Birthdate updated successfully!');
-        //         handleNavigation(); // Proceed to the next step
-        //         resetForm();
-        //     } catch (error) {
-        //         console.error('[BirthdatePicker] Error updating birthdate:', error);
-        //     }
-        // },
     });
 
     return (

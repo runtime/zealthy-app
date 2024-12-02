@@ -3,6 +3,8 @@ import axios from 'axios';
 
 // Create an Axios instance with default settings
 const apiClient = axios.create({
+
+    //todo in lieu of env vars i will be deleting this public api in 5 days.
     baseURL: 'https://sr6oj50p5m.execute-api.us-east-1.amazonaws.com/prod', // Replace with your actual API Gateway URL
     timeout: 10000, // Optional: set a timeout for requests
     headers: {
@@ -16,7 +18,7 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
     (config) => {
         // Modify the request config if needed (e.g., add auth tokens)
-        console.log('Request sent with config:', config);
+        //console.log('Request sent with config:', config);
         return config;
     },
     (error) => {

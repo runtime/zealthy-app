@@ -22,9 +22,9 @@ const Admin = () => {
         // Add component to the selected step
         if (updatedConfig[selectedStep].length < 2 && !updatedConfig.flat().includes(componentName)) {
             updatedConfig[selectedStep].push(componentName);
-            console.log('[Admin] ADDED and setting updatedConfig:', updatedConfig);
+            //console.log('[Admin] ADDED and setting updatedConfig:', updatedConfig);
             setAdminConfig(updatedConfig);
-            console.log('[Admin] this is the updatedConfig:', updatedConfig);
+            //console.log('[Admin] this is the updatedConfig:', updatedConfig);
         } else {
             alert('Cannot add duplicate components or exceed 2 components per step.');
         }
@@ -35,9 +35,9 @@ const Admin = () => {
     const handleRemove = (stepIndex, component) => {
         const updatedConfig = [...adminConfig];
         updatedConfig[stepIndex] = updatedConfig[stepIndex].filter((c) => c !== component);
-        console.log('[Admin] REMOVED and setting updatedConfig:', updatedConfig);
+        //console.log('[Admin] REMOVED and setting updatedConfig:', updatedConfig);
         setAdminConfig(updatedConfig);
-        console.log('[Admin] this is the updatedConfig:', updatedConfig);
+        //console.log('[Admin] this is the updatedConfig:', updatedConfig);
     };
 
     return (

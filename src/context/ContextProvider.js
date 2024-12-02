@@ -16,10 +16,7 @@ const ContextProvider = ({ children }) => {
         zip: '',
     });
     const [currentStep, setCurrentStep] = useState(0);
-    // const [adminConfig] = useState([
-    //     ['AddressForm'],
-    //     ['AboutForm', 'BirthdatePicker'],
-    // ]);
+
     const [adminConfig, setAdminConfig] = useState([
         ['AddressForm'],
         ['AboutForm', 'BirthdatePicker'],
@@ -38,6 +35,9 @@ const ContextProvider = ({ children }) => {
         const completedInStep = stepComponents.filter((component) =>
             completeComponents.includes(component)
         ).length;
+        // To Log Progress and statefulness if all you want is one log, this is the one you want.
+        //console.log('[ContextProvider] totalComponents :', stepComponents.length);
+        //console.log('[ContextProvider] completedComponents :', completedInStep);
         return {
             totalComponents: stepComponents.length,
             completedComponents: completedInStep,
@@ -47,7 +47,7 @@ const ContextProvider = ({ children }) => {
     const getAllUsers = async () => {
         try {
             const response = await getUsers();
-            console.log('[ContextProvider] Fetched users response:', response.data.Items);
+            //console.log('[ContextProvider] Fetched users response:', response.data.Items);
             if (Array.isArray(response.data.Items)) {
                 setUserData(response.data.Items);
             }
@@ -60,7 +60,7 @@ const ContextProvider = ({ children }) => {
         try {
             const response = await createUser(user);
             const createdUser = response.data;
-            console.log('[ContextProvider] Created user:', createdUser);
+            //console.log('[ContextProvider] Created user:', createdUser);
 
             setCurrentUser(createdUser);
             setUserData((prev) => [...prev, createdUser]);
@@ -84,7 +84,7 @@ const ContextProvider = ({ children }) => {
 
             setCurrentUser((prev) => {
                 const updatedUser = { ...prev, ...updates };
-                console.log('[ContextProvider] Updated currentUser:', updatedUser);
+                //console.log('[ContextProvider] Updated currentUser:', updatedUser);
                 return updatedUser;
             });
 
@@ -92,7 +92,7 @@ const ContextProvider = ({ children }) => {
                 const updatedUserData = prev.map((user) =>
                     user.id === id ? { ...user, ...updates } : user
                 );
-                console.log('[ContextProvider] Updated userData:', updatedUserData);
+                //console.log('[ContextProvider] Updated userData:', updatedUserData);
                 return updatedUserData;
             });
         } catch (error) {

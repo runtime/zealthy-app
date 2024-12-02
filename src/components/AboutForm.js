@@ -3,60 +3,29 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { AppContext } from '../context/ContextProvider';
 import { TextField, Button, Box, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 
 const AboutForm = () => {
-    const { editUser, currentUser, adminConfig, currentStep, completeComponents, updateCompleteComponents, prettyUrl } = useContext(AppContext); // Access the currentUser
-    const navigate = useNavigate();
+    const { editUser, currentUser, updateCompleteComponents } = useContext(AppContext); // Access the currentUser
 
-    console.log('[AboutForm] currentUser:', currentUser);
-
-    // Navigation logic
-    const step = currentStep;
-    console.log('[AboutForm] current step in this step: step: ', step);
-    const stepsInThisStep = adminConfig[currentStep]?.length || 0;
-    console.log('total number of steps components for this slide: ', stepsInThisStep);
-    //todo reset or get how many are complete this step
-    const howManyStepsAreComplete = completeComponents.length;
-    console.log('[AboutForm] howManyStepsAreComplete: ', howManyStepsAreComplete);
-    const completeComponentsForThisStep = completeComponents.length;
-    console.log('[AboutForm] total number of completed components for this step: ', completeComponentsForThisStep);
-
-
-
-
-    const handleNavigation = () => {
-        // todo make the button inactive
-        console.log('[AboutForm] handleNavigation called');
-        // if (stepsInThisStep === howManyStepsAreComplete) {
-        //     // If all components are complete, navigate to the next step
-        //     navigate(prettyUrl);
-        // } else {
-        //     // dont navigate
-        //     console.log('[AddressForm] Not all components are complete. Cannot proceed.');
-        // }
-    }
-
+    //console.log('[AboutForm] currentUser:', currentUser);
 
     const handleSubmit = async (values) => {
         const id = currentUser?.id;
-        console.log('[AboutForm] Submitting Address with id:', id, ' values:', values);
+        //console.log('[AboutForm] Submitting Address with id:', id, ' values:', values);
         try {
             if (!id) {
                 throw new Error('User ID is missing. Cannot proceed with update.');
             }
             await editUser(id, values); // Ensure ID is passed
-            console.log('[AboutForm] about updated successfully!');
+            //console.log('[AboutForm] about updated successfully!');
             updateCompleteComponents('AboutForm'); // Mark as complete
-            console.log('[AboutForm] updateCompleteComponents complete!');
-            handleNavigation(); // Navigate to the next step
-            console.log('[AboutForm] handleNavigation complete!');
+            //console.log('[AboutForm] updateCompleteComponents complete!');
+            //console.log('[AboutForm] handleNavigation complete!');
 
         } catch (error) {
             console.error('[AboutForm] Error updating Address:', error);
         }
     };
-
 
     // Formik configuration
     const formik = useFormik({
