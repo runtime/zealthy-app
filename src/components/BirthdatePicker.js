@@ -23,15 +23,15 @@ const BirthdatePicker = () => {
     //console.log('total number of completed components for this step: ', completeComponentsForThisStep);
 
 
-    const handleNavigation = () => {
-        if (stepsInThisStep === howManyStepsAreComplete) {
-            // If all components are complete, navigate to the next step
-            navigate(prettyUrl);
-        } else {
-            // dont navigate
-            console.log('[BirthdayPicker] Not all components are complete. Cannot proceed.');
-        }
-    }
+    // const handleNavigation = () => {
+    //     if (stepsInThisStep === howManyStepsAreComplete) {
+    //         // If all components are complete, navigate to the next step
+    //         navigate(prettyUrl);
+    //     } else {
+    //         // dont navigate
+    //         console.log('[BirthdayPicker] Not all components are complete. Cannot proceed.');
+    //     }
+    // }
 
     const handleSubmit = async (values) => {
         const id = currentUser?.id;
@@ -44,7 +44,7 @@ const BirthdatePicker = () => {
             console.log('[BirthdatePicker] birthday updated successfully!');
             updateCompleteComponents('BirthdatePicker'); // Mark as complete
             console.log('[BirthdatePicker] updateCompleteComponents complete!');
-            handleNavigation(); // Navigate to the next step
+            //handleNavigation(); // Navigate to the next step
             console.log('[BirthdatePicker] handleNavigation complete!');
         } catch (error) {
             console.error('[BirthdatePicker] Error updating Address:', error);
@@ -62,7 +62,7 @@ const BirthdatePicker = () => {
                 .max(new Date(), 'Birthdate cannot be in the future')
                 .required('Birthdate is required'),
         }),
-        onSubmit: (values, { resetForm }) => handleSubmit(values, resetForm),
+        onSubmit: (values) => handleSubmit(values),
         // onSubmit: async (values, { resetForm }) => {
         //     console.log('[BirthdatePicker] Submitting Birthdate:', values);
         //     try {

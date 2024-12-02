@@ -9,7 +9,7 @@ const AboutForm = () => {
     const { editUser, currentUser, adminConfig, currentStep, completeComponents, updateCompleteComponents, prettyUrl } = useContext(AppContext); // Access the currentUser
     const navigate = useNavigate();
 
-    //console.log('[AboutForm] currentUser:', currentUser);
+    console.log('[AboutForm] currentUser:', currentUser);
 
     // Navigation logic
     const step = currentStep;
@@ -26,13 +26,15 @@ const AboutForm = () => {
 
 
     const handleNavigation = () => {
-        if (stepsInThisStep === howManyStepsAreComplete) {
-            // If all components are complete, navigate to the next step
-            navigate(prettyUrl);
-        } else {
-            // dont navigate
-            console.log('[AddressForm] Not all components are complete. Cannot proceed.');
-        }
+        // todo make the button inactive
+        console.log('[AboutForm] handleNavigation called');
+        // if (stepsInThisStep === howManyStepsAreComplete) {
+        //     // If all components are complete, navigate to the next step
+        //     navigate(prettyUrl);
+        // } else {
+        //     // dont navigate
+        //     console.log('[AddressForm] Not all components are complete. Cannot proceed.');
+        // }
     }
 
 
@@ -59,12 +61,12 @@ const AboutForm = () => {
     // Formik configuration
     const formik = useFormik({
         initialValues: {
-            about: '', // Initialize the About field
+            about: currentUser.about || '', // Initialize the About field
         },
         validationSchema: Yup.object({
             about: Yup.string().max(300, 'About Me must be 300 characters or less'),
         }),
-        onSubmit: (values, { resetForm }) => handleSubmit(values, resetForm),
+        onSubmit: (values) => handleSubmit(values),
 
     });
 
