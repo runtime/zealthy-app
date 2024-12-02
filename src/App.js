@@ -15,7 +15,7 @@ const App = () => {
   return (
       <ContextProvider>
         <Router>
-          {/*<Header />*/}
+          <Header />
           <Breadcrumbs />
           <Routes>
             <Route path="/" element={<Home />} />

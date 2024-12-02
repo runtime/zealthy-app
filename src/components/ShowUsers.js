@@ -1,8 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import { AppContext } from '../context/ContextProvider';
+import { useNavigate } from 'react-router-dom';
 
 const ShowUsers = () => {
     const { userData, setUserData } = useContext(AppContext);
+    const navigate = useNavigate();
 
     console.log('[ShowUsers], userData: ', userData)
 
@@ -39,13 +41,23 @@ const ShowUsers = () => {
         fetchUsers();
     }, [setUserData]);
 
+    const handleAdminClick = () => {
+        //navigate('/admin');
+        window.location.reload('/');
+    }
+
 
     return (
         <div>
             <h2>All Users</h2>
+            <p>Click the button below to restart the app. This will clear the current User.</p>
+            <button onClick={handleAdminClick}>
+                RESTART APP
+            </button>
             {userData.length === 0 ? (
                 <p>No users found.</p>
             ) : (
+
                 <table>
                     <thead>
                     <tr>
@@ -75,7 +87,9 @@ const ShowUsers = () => {
                     ))}
                     </tbody>
                 </table>
+
             )}
+
         </div>
     );
 };
